@@ -1,0 +1,53 @@
+# Go binary output
+/main
+/main.exe
+
+# Build directories
+bin/
+build/
+dist/
+out/
+tmp/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Vendor directory (optional, depending on your workflow)
+vendor/
+
+# Go module cache (optional, if using Go modules)
+go.sum
+
+# IDE and editor files
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.suo
+*.ntvs_analysis.dat
+*.njsproj
+*.sln
+*.sw?
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Test results
+*.test
+
+# Coverage reports
+*.coverage
+*.coverprofile
+
+# Other
+*.lock
+*.tmp
+*.cache
