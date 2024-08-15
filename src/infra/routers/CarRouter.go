@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"clean_arch_go/src/domain"
 	"clean_arch_go/src/infra/controllers"
 	"net/http"
 
@@ -9,13 +10,16 @@ import (
 
 func CarRouter(
 	r *mux.Router,
+	carRepo domain.CarRepository,
 ) {
+	controller := controllers.NewController(carRepo)
+
 	r.HandleFunc("/cars", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
-			controllers.GetCars(w, r)
+			controller.GetCars(w, r)
 		case http.MethodPost:
-			controllers.CreateCar(w, r)
+			controller.CreateCar(w, r)
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
@@ -24,11 +28,11 @@ func CarRouter(
 	r.HandleFunc("/cars/{id:[a-zA-Z0-9_-]+}", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
-			controllers.GetCarsById(w, r)
+			controller.GetCarsById(w, r)
 		case http.MethodPatch:
-			controllers.UpdateCar(w, r)
+			controller.UpdateCar(w, r)
 		case http.MethodDelete:
-			controllers.DeleteCar(w, r)
+			controller.DeleteCar(w, r)
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
@@ -37,7 +41,7 @@ func CarRouter(
 	r.HandleFunc("/cars/model/{model:[a-zA-Z0-9_-]+}", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
-			controllers.GetCarsByModel(w, r)
+			controller.GetCarsByModel(w, r)
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
