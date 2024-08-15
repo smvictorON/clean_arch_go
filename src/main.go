@@ -8,6 +8,7 @@ import (
 
 	"clean_arch_go/src/infra/routers"
 
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
 
@@ -17,8 +18,7 @@ func main() {
 		log.Fatalf("Err while loading .env: %v", err)
 	}
 
-	mux := http.NewServeMux()
-
+	mux := mux.NewRouter()
 	routers.CarRouter(mux)
 
 	fmt.Println("Running on", os.Getenv("PORT"))

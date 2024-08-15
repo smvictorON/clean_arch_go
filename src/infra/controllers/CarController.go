@@ -6,7 +6,7 @@ import (
 )
 
 func GetCars(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "GetCarssss")
+	fmt.Fprintln(w, "GetCars")
 }
 
 func CreateCar(w http.ResponseWriter, r *http.Request) {

@@ -3,12 +3,14 @@ package routers
 import (
 	"clean_arch_go/src/infra/controllers"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func CarRouter(
-	mux *http.ServeMux,
+	r *mux.Router,
 ) {
-	mux.HandleFunc("/cars", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/cars", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
 			controllers.GetCars(w, r)
@@ -17,27 +19,27 @@ func CarRouter(
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
-	})
+	}).Methods(http.MethodGet, http.MethodPost)
 
-	mux.HandleFunc("/cars/{id:[a-zA-Z0-9_-]+}", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/cars/{id:[a-zA-Z0-9_-]+}", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
 			controllers.GetCarsById(w, r)
 		case http.MethodPatch:
-			controllers.CreateCar(w, r)
+			controllers.UpdateCar(w, r)
 		case http.MethodDelete:
-			controllers.CreateCar(w, r)
+			controllers.DeleteCar(w, r)
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
-	})
+	}).Methods(http.MethodGet, http.MethodPatch, http.MethodDelete)
 
-	mux.HandleFunc("/cars/model/:model", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/cars/model/{model:[a-zA-Z0-9_-]+}", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
-			controllers.GetCarsById(w, r)
+			controllers.GetCarsByModel(w, r)
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
-	})
+	}).Methods(http.MethodGet)
 }
