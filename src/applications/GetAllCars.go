@@ -14,6 +14,10 @@ func NewGetAllCars(carRepo domain.CarRepository) *GetAllCars {
 	}
 }
 
-func (app *GetAllCars) Execute() ([]domain.Car, error) {
-	return app.carRepo.ReadAll(), nil
+func (app *GetAllCars) Execute() []domain.Car {
+	cars := app.carRepo.ReadAll()
+	if cars == nil {
+		return []domain.Car{}
+	}
+	return cars
 }
