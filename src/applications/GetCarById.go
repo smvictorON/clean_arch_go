@@ -14,6 +14,6 @@ func NewGetCarById(carRepo domain.CarRepository) *GetCarById {
 	}
 }
 
-func (app *GetCarById) Execute(carId string) (domain.Car, error) {
+func (app *GetCarById) Execute(carId string) (*domain.Car, error) {
 	return app.carRepo.ReadOne(carId)
 }

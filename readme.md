@@ -9,3 +9,14 @@
 ### Execute with Env:
   `. ./.env && go run src/main.go`
 
+*It was implemented*
+
+- Routers
+- Controllers
+- Use Cases
+- Domains
+- Repositories
+- Envs
+- Tests
+- Classes
+- Interfaces

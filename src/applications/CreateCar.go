@@ -2,8 +2,6 @@ package applications
 
 import (
 	"clean_arch_go/src/domain"
-
-	"github.com/google/uuid"
 )
 
 type CreateCar struct {
@@ -16,7 +14,6 @@ func NewCreateCar(carRepo domain.CarRepository) *CreateCar {
 	}
 }
 
-func (app *CreateCar) Execute(car domain.Car) (string, error) {
-	car.Id = uuid.New().String()
-	return app.carRepo.Create(car), nil
+func (app *CreateCar) Execute(car domain.Car) string {
+	return app.carRepo.Create(car)
 }

@@ -27,10 +27,7 @@ func (ctrl Controller) CreateCar(w http.ResponseWriter, r *http.Request) (interf
 		return nil, err
 	}
 
-	res, err := applications.NewCreateCar(ctrl.carRepo).Execute(car)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	res := applications.NewCreateCar(ctrl.carRepo).Execute(car)
 
 	w.Header().Set("Content-Type", "application/json")
 

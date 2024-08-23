@@ -4,6 +4,8 @@ import (
 	"clean_arch_go/src/domain"
 	"errors"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 type CarRepositoryInMemory struct {
@@ -17,6 +19,7 @@ func NewCarRepositoryInMemory() *CarRepositoryInMemory {
 }
 
 func (repo *CarRepositoryInMemory) Create(car domain.Car) string {
+	car.Id = uuid.New().String()
 	repo.cars = append(repo.cars, car)
 	return car.Id
 }
@@ -37,13 +40,13 @@ func (repo *CarRepositoryInMemory) ReadByModel(carModel string) []domain.Car {
 	return carsWithModel
 }
 
-func (repo *CarRepositoryInMemory) ReadOne(carId string) (domain.Car, error) {
+func (repo *CarRepositoryInMemory) ReadOne(carId string) (*domain.Car, error) {
 	for _, car := range repo.cars {
 		if car.Id == carId {
-			return car, nil
+			return &car, nil
 		}
 	}
-	return domain.Car{}, errors.New("car not found")
+	return nil, errors.New("car not found")
 }
 
 func (repo *CarRepositoryInMemory) Update(carId string, car domain.Car) bool {
