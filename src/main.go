@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"clean_arch_go/src/infra/presenters"
 	"clean_arch_go/src/infra/repositories"
 	"clean_arch_go/src/infra/routers"
 
@@ -15,10 +16,12 @@ import (
 func main() {
 	mux := mux.NewRouter()
 	carRepo := repositories.NewCarRepositoryInMemory()
+	wipeIdPresenter := presenters.NewWipeIdPresenter()
 
 	routers.CarRouter(
 		mux,
 		carRepo,
+		wipeIdPresenter,
 	)
 
 	fmt.Println("Running on", os.Getenv("PORT"))

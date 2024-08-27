@@ -3,6 +3,8 @@ package routers
 import (
 	"clean_arch_go/src/domain"
 	"clean_arch_go/src/infra/controllers"
+	"clean_arch_go/src/infra/middlewares"
+	"clean_arch_go/src/infra/presenters"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -11,15 +13,16 @@ import (
 func CarRouter(
 	r *mux.Router,
 	carRepo domain.CarRepository,
+	wipeIdPresenter presenters.Presenter,
 ) {
-	controller := controllers.NewController(carRepo)
+	r.Use(middlewares.AuthMiddleware)
 
 	r.HandleFunc("/cars", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
-			controller.GetCars(w, r)
+			controllers.NewGetAllCarsCtrl(carRepo, wipeIdPresenter).Handle(w, r)
 		case http.MethodPost:
-			controller.CreateCar(w, r)
+			controllers.NewCreateCarCtrl(carRepo).Handle(w, r)
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
@@ -28,11 +31,11 @@ func CarRouter(
 	r.HandleFunc("/cars/{id:[a-zA-Z0-9_-]+}", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
-			controller.GetCarsById(w, r)
+			controllers.NewGetCarByIdCtrl(carRepo).Handle(w, r)
 		case http.MethodPatch:
-			controller.UpdateCar(w, r)
+			controllers.NewUpdateCarCtrl(carRepo).Handle(w, r)
 		case http.MethodDelete:
-			controller.DeleteCar(w, r)
+			controllers.NewDeleteCarCtrl(carRepo).Handle(w, r)
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
@@ -41,7 +44,7 @@ func CarRouter(
 	r.HandleFunc("/cars/model/{model:[a-zA-Z0-9_-]+}", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
-			controller.GetCarsByModel(w, r)
+			controllers.NewGetCarsByModelCtrl(carRepo, wipeIdPresenter).Handle(w, r)
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
